@@ -1,0 +1,2 @@
+python scripts/train_prostate_image.py --data_dir /srv/Data/playground_data/brats/brats_training_data/data_raw --h5_path /srv/Data/playground_data/brats/h5_all_modalities --mode train --image_size 128 --num_channels 128 --num_res_blocks 3 --diffusion_steps 1000 --noise_schedule linear --lr 1e-4 --batch_size 15 --learn_sigma True --class_cond False --tf_logger_dir /home/arunima/diffusion/ddm_for_contrast/guided-diffusion/logs_tensorboard
+# /media/Data16T/Kishore/PALETTE/ddm_for_contrast/guided-diffusion

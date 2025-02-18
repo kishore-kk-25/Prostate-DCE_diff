@@ -1,0 +1,107 @@
+
+****************** CIFAR DATA******************
+
+path to cifar data: /srv/Data/playground_data/cifar/data/cifar_data/train
+@configure: model-path /home/arunima/diffusiong/diffusion/guided-diffusion/classifier_model
+
+pip install -e . is to install guided_diffusion
+
+TRAIN_FLAGS="--iterations 300000 --anneal_lr True --batch_size 256 --lr 3e-4 --save_interval 10000 --weight_decay 0.05"
+CLASSIFIER_FLAGS="--image_size 32 --classifier_attention_resolutions 8 --classifier_depth 2 --classifier_width 128 --classifier_pool attention --classifier_resblock_updown True --classifier_use_scale_shift_norm True"
+
+
+****classifier train******:
+
+python scripts/classifier_train.py --data_dir /srv/Data/playground_data/cifar/data/cifar_data/train --iterations 300000 --anneal_lr True --batch_size 20 --lr 1e-4 --save_interval 10000 --weight_decay 0.05 --image_size 32 --classifier_attention_resolutions 8 --classifier_depth 2 --classifier_width 128 --classifier_pool attention --classifier_resblock_updown True --classifier_use_scale_shift_norm True
+
+
+
+
+****** Diffusion Model train******:
+
+MODEL_FLAGS="--image_size 32 --num_channels 128 --num_res_blocks 3"
+DIFFUSION_FLAGS="--diffusion_steps 1000 --noise_schedule linear"
+TRAIN_FLAGS="--lr 3e-4 --batch_size 128"
+
+
+python scripts/image_train.py --data_dir path/to/images --image_size 32 --num_channels 128 --num_res_blocks 3 --diffusion_steps 1000 --noise_schedule linear --lr 3e-4 --batch_size 20
+
+
+
+*************** Sampling using classifier***********
+
+
+MODEL_FLAGS="--attention_resolutions 32,16,8 --class_cond True --diffusion_steps 1000 --dropout 0.1 --image_size 64 --learn_sigma True --noise_schedule cosine --num_channels 192 --num_head_channels 64 --num_res_blocks 3 --resblock_updown True --use_new_attention_order True --use_fp16 True --use_scale_shift_norm True"
+
+SAMPLE_FLAGS="--batch_size 4 --num_samples 100 --timestep_respacing 250"
+
+path-to-classifier:/srv/Data/playground_data/checkpoint_folder/classifier_checkpoint/cifar-2022-12-27/model299999.pt
+path-to-dm: /srv/Data/playground_data/checkpoint_folder/model_checkpoint/cifar-2022-12-30/ema_0.9999_990000.pt
+
+python scripts/classifier_sample.py \
+    --model_path /srv/Data/playground_data/checkpoint_folder/model_checkpoint/cifar-2022-12-30/ema_0.9999_990000.pt \
+    --classifier_path /srv/Data/playground_data/checkpoint_folder/classifier_checkpoint/cifar-2022-12-27/model299999.pt \
+    --class_cond False --image_size 32 --learn_sigma True --num_channels 128 --num_res_blocks 3 --image_size 32 --classifier_attention_resolutions 8 --classifier_depth 2 --classifier_width 128 --classifier_pool attention --classifier_resblock_updown True --classifier_use_scale_shift_norm True --classifier_scale 1.0 --classifier_use_fp16 False --batch_size 4 --num_samples 10 --timestep_respacing 250 --use_ddim False
+
+
+
+
+
+
+<<<<--use_fp16 False
+--use_scale_shift_norm True
+--attention_resolutions 16 when i removed this load_state_dict error got solved fro dm.>>>>
+
+
+
+
+******************************BRATS DATA***************************
+
+Trying to move from modality T1 ---> T2 
+
+LOGGER: PATH TO CLASSSIFIER CHECKPOINT: /srv/Data/playground_data/checkpoint_folder/T1T2_classifier_checkpoint
+
+
+
+
+
+
+**** train classifier****
+
+python scripts/train_brats_classifier.py --data_dir /srv/Data/playground_data/brats/brats_training_data/data_raw --h5_path /srv/Data/playground_data/brats/h5_brats --iterations 300000 --anneal_lr True --batch_size 5 --lr 1e-4 --save_interval 10000 --weight_decay 0.05 --image_size 256 --classifier_attention_resolutions 8 --classifier_depth 2 --classifier_width 128 --classifier_pool attention --classifier_resblock_updown True --classifier_use_scale_shift_norm True
+
+
+******* train model *********
+
+python scripts/train_brats_image.py --data_dir /srv/Data/playground_data/brats/brats_training_data/data_raw --h5_path /srv/Data/playground_data/brats/h5_brats --image_size 256 --num_channels 128 --num_res_blocks 3 --diffusion_steps 1000 --noise_schedule linear --lr 1e-4 --batch_size 1 --learn_sigma True --class_cond False
+
+******** sample **************
+
+python scripts/classifier_sample_brats.py \
+    --model_path /srv/Data/playground_data/checkpoint_folder/model_T1T2_conditional/Brats-2023-01-26/ema_0.9999_700000.pt \
+    --classifier_path /srv/Data/playground_data/checkpoint_folder/T1T2_classifier_checkpoint/Brats-2023-01-16/model200000.pt \
+    --brats_path /srv/Data/playground_data/brats/brats_training_data/data_raw \
+    --h5_path /srv/Data/playground_data/brats/h5_t1_t2\
+    --class_cond True --image_size 256 --learn_sigma True --num_channels 128 --num_res_blocks 3 --image_size 256 --classifier_attention_resolutions 8 --classifier_depth 2 --classifier_width 128 --classifier_pool attention --classifier_resblock_updown True --classifier_use_scale_shift_norm True --classifier_scale 1 --classifier_use_fp16 False --batch_size 1 --num_samples 1 --timestep_respacing ddim1000 --use_ddim True
+
+
+
+
+
+/srv/Data/playground_data/checkpoint_folder/brats_new_exp/Brats_conditional-2023-02-02/ema_0.9999_120000.pt
+/home/arunima/diffusion/guided-diffusion/samples_generated
+
+/srv/Data/playground_data/checkpoint_folder/brats_new_exp/cold_diffusion_L2
+
+
+
+
+
+
+
+
+
+
+
+
+

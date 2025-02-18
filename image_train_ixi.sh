@@ -1,0 +1,1 @@
+python scripts/train_ixi_image.py --data_dir /srv/Data/playground_data/ixi_data/ixi --h5_path /srv/Data/playground_data/ixi_data/h5_ixi --image_size 256 --num_channels 128 --num_res_blocks 3 --diffusion_steps 1000 --noise_schedule linear --lr 1e-4 --batch_size 3 --learn_sigma True --class_cond False --tf_logger_dir /home/arunima/diffusion/guided-diffusion/logs_tensorboard

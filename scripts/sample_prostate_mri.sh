@@ -1,0 +1,3 @@
+# sampling process for prostatemri dataset
+
+python scripts/sample_prostate_modified_loop.py --model_path /media/Data16T/Kishore/PALETTE/ddm_for_contrast/results_prostate/palette_20:58__18_03_2024__prosX_260k_resume_TRAIN/model600000.pt  --data_dir  /media/Data16T/MRI/datasets/Prostate-MRI/manifest-NVOVbtyd4050172347647205745/PROSTATE_MRI_160_h5/  --mode test --class_cond False --image_size 128 --learn_sigma True --num_channels 128 --num_res_blocks 3 --batch_size 1 --num_samples 2 --timestep_respacing 1000 --use_ddim False

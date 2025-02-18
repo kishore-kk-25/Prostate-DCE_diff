@@ -1,0 +1,1 @@
+python scripts/train_brats_image.py --data_dir /srv/Data/playground_data/brats/brats_training_data/data_raw --h5_path /srv/Data/playground_data/brats/h5_brats --image_size 256 --num_channels 128 --num_res_blocks 3 --diffusion_steps 1000 --noise_schedule linear --lr 1e-4 --batch_size 1 --learn_sigma True --class_cond True

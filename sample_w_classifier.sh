@@ -1,0 +1,4 @@
+python scripts/classifier_sample.py \
+    --model_path /srv/Data/playground_data/checkpoint_folder/model_checkpoint/cifar-2022-12-30/ema_0.9999_500000.pt \
+    --classifier_path /srv/Data/playground_data/checkpoint_folder/classifier_checkpoint/cifar-2022-12-27/model200000.pt \
+    --class_cond False --image_size 32 --learn_sigma True --num_channels 128 --num_res_blocks 3 --image_size 32 --classifier_attention_resolutions 8 --classifier_depth 2 --classifier_width 128 --classifier_pool attention --classifier_resblock_updown True --classifier_use_scale_shift_norm True --classifier_scale 1 --classifier_use_fp16 False --batch_size 1 --num_samples 1 --timestep_respacing ddim50 --use_ddim True
